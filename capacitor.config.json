@@ -1,0 +1,8 @@
+{
+  "appId": "com.mangoapp",
+  "appName": "mangoapp",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  }
+}

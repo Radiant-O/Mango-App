@@ -9,7 +9,9 @@ import {
   <div class="routes">
     <div class="route_icons">
       <HomeOutlined class="route_icon" />
-      <ShoppingOutlined class="route_icon" />
+      <!-- <ShoppingOutlined class="route_icon" /> -->
+    <div><a href="https://brandokonnect.com/subscribe.php"><ShoppingOutlined class="route_icon" /></a></div>
+
 
       <SettingOutlined class="route_icon" />
     </div>
@@ -26,7 +28,7 @@ import {
 
   -webkit-border-radius: 20px;
   border-radius: 20px;
-  background: #4967ed;
+  background: rgb(59, 130, 246);
   -webkit-box-shadow: 5px 5px 11px #2d4cd6, -5px -5px 11px #fff;
   box-shadow: 5px 5px 11px #081a66, -5px -5px 11px #fff;
 }

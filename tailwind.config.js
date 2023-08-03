@@ -13,6 +13,7 @@ export default {
         "open-sans": ["Open Sans", "sans-serif"],
         "pacifico": ["Pacifico", "cursive"],
         "poppins": ["Poppins", "sans-serif"],
+        "montserrat": ["montserrat", "san-serif"]
       },
       colors: {
         'bgDark': "#222840",

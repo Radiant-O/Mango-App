@@ -56,6 +56,6 @@ const router = createRouter({
       component: () => import('../views/Notification.vue')
     },
   ]
-})
+});
 
 export default router

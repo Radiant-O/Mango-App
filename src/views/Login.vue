@@ -1,17 +1,19 @@
 <script setup>
 import { reactive } from "vue";
 import { LeftOutlined } from "@ant-design/icons-vue";
+import { useUserStore } from "../stores/user";
+
+const userStore = useUserStore();
 const formState = reactive({
   email: "",
   password: "",
   remember: true,
 });
+
 const onFinish = (values) => {
   console.log("Success:", values);
 };
-const onFinishFailed = (errorInfo) => {
-  console.log("Failed:", errorInfo);
-};
+
 </script>
 
 <template>
@@ -68,4 +70,6 @@ const onFinishFailed = (errorInfo) => {
       </p>
     </div>
   </section>
+
+ 
 </template>

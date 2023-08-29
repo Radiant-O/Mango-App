@@ -16,14 +16,23 @@ import {
   ProfileOutlined,
 } from "@ant-design/icons-vue";
 
+import { useRouter } from "vue-router"
+
+const router = useRouter();
+
 const nav = ref(false);
 
 const toggleNav = () => {
   nav.value = !nav.value;
 };
+
+const logOut = ( async () => {
+  await router.push('/')
+})
 </script>
 
 <template>
+  <transition name="slide-menu">
   <section class="nav" v-if="!nav">
     <CloseOutlined class="close_btn" @click="toggleNav" />
 
@@ -66,10 +75,25 @@ const toggleNav = () => {
         ><PhoneOutlined :rotate="90" /><span>Contact Us</span></a
       >
     </div>
-    <router-link to="/">
-      <div class="div">
+    
+      <div class="div" @click="logOut">
         <ExportOutlined :rotate="180" /><span>Log Out</span>
       </div>
-    </router-link>
+    
   </section>
+</transition>
 </template>
+
+<style>
+.slide-menu-enter-active {
+  transform: translate(0, 0);
+  -webkit-transform: translate(0, 0);
+  transform: translate(275px, 0);
+  -webkit-transform: translate(275px, 0);
+}
+
+.slide-menu-leave-active {
+  transform: translate(275px, 0);
+  -webkit-transform: translate(275px, 0);
+}
+</style>

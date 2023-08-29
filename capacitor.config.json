@@ -1,8 +1,9 @@
 {
-  "appId": "com.mangoapp",
-  "appName": "mangoapp",
+  "appId": "com.brandokonnect",
+  "appName": "brandokonnect",
   "webDir": "dist",
   "server": {
     "androidScheme": "https"
-  }
+  },
+  "cordova": {}
 }

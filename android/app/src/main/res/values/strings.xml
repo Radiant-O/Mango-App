@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">mangoapp</string>
-    <string name="title_activity_main">mangoapp</string>
+    <string name="app_name">brandokonnect</string>
+    <string name="title_activity_main">brandokonnect</string>
     <string name="package_name">com.mangoapp</string>
     <string name="custom_url_scheme">com.mangoapp</string>
 </resources>

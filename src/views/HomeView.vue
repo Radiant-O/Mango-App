@@ -4,9 +4,15 @@ import HomeBar from "../components/HomeBar.vue";
 import Bottom_bar from "../components/bottom_bar.vue";
 import Toggle from "@vueform/toggle";
 import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons-vue";
+import { NativeSettings, AndroidSettings } from "capacitor-native-settings";
 
 const tower = ref(false);
 const value = ref(true);
+
+const openData = () => {
+x    option: AndroidSettings.Network,
+  });
+};
 </script>
 
 <template>
@@ -25,7 +31,7 @@ const value = ref(true);
         <div class="top_body">
           <div class="top_body_btns">
             <div class="imgtr">
-              <div class="container">
+              <div @click="openData" class="container">
                 <input id="checkbox" type="checkbox" />
                 <label class="button" for="checkbox">
                   <span class="icon">

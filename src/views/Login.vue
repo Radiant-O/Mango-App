@@ -1,17 +1,36 @@
 <script setup>
+
 import { reactive } from "vue";
 import { LeftOutlined } from "@ant-design/icons-vue";
 import { useUserStore } from "../stores/user";
+import axios from "axios";
+import {useRouter} from "vue-router";
 
 const userStore = useUserStore();
+
 const formState = reactive({
   email: "",
   password: "",
   remember: true,
 });
 
-const onFinish = (values) => {
-  console.log("Success:", values);
+const router = useRouter();
+
+const onFinish = async () => {
+  const data = {
+    email: formState.email,
+    password: formState.password,
+  };
+  await axios
+    .post("http://brandokonnect.com/api/users/login", {
+      headers: {'Content-Type': 'application/json'},
+      credentials: 'include',
+      body: JSON.stringify(data)
+    })
+    .then(() => {
+      router.push("/home");
+    });
+  console.log("Success:", formState);
 };
 
 </script>
@@ -26,10 +45,9 @@ const onFinish = (values) => {
       <p>Welcome Back...</p>
     </div>
     <div class="auth_box">
-      <a-form>
-        <!-- :model="formState"
-        @finish="onFinish"
-        @finishFailed="onFinishFailed" -->
+      <a-form
+        :model="formState"
+        @finish="onFinish">
 
         <a-form-item
           name="email"

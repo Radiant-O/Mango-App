@@ -1,16 +1,39 @@
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import HomeBar from "../components/HomeBar.vue";
 import Bottom_bar from "../components/bottom_bar.vue";
 import Toggle from "@vueform/toggle";
 import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons-vue";
 import { NativeSettings, AndroidSettings } from "capacitor-native-settings";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 
 const tower = ref(false);
 const value = ref(true);
+const store = useStore();
+const router = useRouter();
+const username = ref(null);
+
+onMounted(async () => {
+  if (!store.getters.isLoggedIn) {
+    router.push({ name: "/login" });
+  }
+
+  username.value = store.getters.getUser.username;
+
+  // const response = await fetch("http://localhost:5001/api/users/current", {
+  //   headers: { "Content-Type": "application/json" },
+  // });
+  // const content = await response.json();
+
+  // await store.dispatch('setAuth', true);
+});
+
+
 
 const openData = () => {
-x    option: AndroidSettings.Network,
+  NativeSettings.openAndroid({
+    option: AndroidSettings.Network,
   });
 };
 </script>
@@ -68,9 +91,9 @@ x    option: AndroidSettings.Network,
                   </span>
                 </label>
               </div>
-              <div class="fetch">
+              <!-- <div class="fetch">
                 <p class="time_used">Fetching...</p>
-              </div>
+              </div> -->
             </div>
             <!-- <div class="imgtr">
               <div>

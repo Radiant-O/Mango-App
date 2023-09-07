@@ -1,8 +1,9 @@
 <script setup>
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import { LeftOutlined } from "@ant-design/icons-vue";
-import axios from "axios";
 import { useRouter } from "vue-router";
+
+import AuthService from "../services/AuthService.js";
 
 const formState = reactive({
   firstname: "",
@@ -13,24 +14,41 @@ const formState = reactive({
   password: "",
   remember: true,
 });
-
+const msg = ref(null);
+const active = ref(false);
 const router = useRouter();
 
 const onFinish = async () => {
-  const data = {
-    fname: formState.firstname,
-    lname: formState.lastname,
-    user_name: formState.username,
-    phone: formState.phonenum,
-    email: formState.email,
-    password: formState.password,
-  };
-  await axios
-    .post("http://brandokonnect.com/api/users/register", data)
-    .then(() => {
-      router.push("/login");
-    });
-  console.log("Success:", formState);
+  try {
+    active.value = true;
+    const credentials = {
+      fname: formState.firstname,
+      lname: formState.lastname,
+      user_name: formState.username,
+      phone: formState.phonenum,
+      email: formState.email,
+      password: formState.password,
+    };
+    const response = await AuthService.signUp(credentials);
+    msg.value = response.msg;
+    setTimeout(() => {
+      active.value = false;
+    }, 1500);
+    router.push({ name: "login" });
+    // await axios
+    //   .post("http://localhost:5001/api/users/register", data)
+    //   .then(() => {
+    //     setTimeout(() => {
+    //       active.value = false;
+    //     }, 2000);
+    //     router.push({ name: "login" });
+    //   });
+  } catch (error) {
+    setTimeout(() => {
+      active.value = false;
+    },1500);
+    msg.value = error.response.msg;
+  }
 };
 </script>
 
@@ -41,6 +59,7 @@ const onFinish = async () => {
       <p class="auth_text">Sign Up</p>
     </div>
     <div class="auth_box">
+      <p v-if="msg"> {{ msg }}</p>
       <a-form :model="formState" @finish="onFinish">
         <a-form-item
           name="firstname"
@@ -122,6 +141,12 @@ const onFinish = async () => {
             > </span
           >.
         </p>
+
+        <div class="loading">
+          <div class="loader" v-if="active">
+            <a-spin />
+          </div>
+        </div>
 
         <button class="auth_btn" type="submit">Sign Up</button>
       </a-form>

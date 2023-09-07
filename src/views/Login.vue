@@ -1,12 +1,12 @@
 <script setup>
-
-import { reactive } from "vue";
+import { ref, reactive } from "vue";
 import { LeftOutlined } from "@ant-design/icons-vue";
-import { useUserStore } from "../stores/user";
-import axios from "axios";
-import {useRouter} from "vue-router";
+import { useRouter } from "vue-router";
+// import auth from './stores/auth'
+import { useStore } from "vuex";
+import AuthService from "../services/AuthService.js";
 
-const userStore = useUserStore();
+const store = useStore();
 
 const formState = reactive({
   email: "",
@@ -14,25 +14,37 @@ const formState = reactive({
   remember: true,
 });
 
+const active = ref(false);
 const router = useRouter();
+const msg = ref(null);
 
 const onFinish = async () => {
-  const data = {
-    email: formState.email,
-    password: formState.password,
-  };
-  await axios
-    .post("http://brandokonnect.com/api/users/login", {
-      headers: {'Content-Type': 'application/json'},
-      credentials: 'include',
-      body: JSON.stringify(data)
-    })
-    .then(() => {
-      router.push("/home");
-    });
-  console.log("Success:", formState);
-};
+  try {
+    active.value = true;
+    const credentials = {
+      email: formState.email,
+      password: formState.password,
+    };
+    const response = await AuthService.login(credentials);
+    msg.value = response.msg;
 
+    const token = response.token;
+    const user = response.user;
+
+    store.dispatch("login", { token, user });
+
+    setTimeout(() => {
+      active.value = false;
+    }, 1500);
+
+    router.push({ name: "home" });
+  } catch (error) {
+    setTimeout(() => {
+      active.value = false;
+    }, 1500);
+    msg.value = error.response.msg;
+  }
+};
 </script>
 
 <template>
@@ -45,10 +57,10 @@ const onFinish = async () => {
       <p>Welcome Back...</p>
     </div>
     <div class="auth_box">
-      <a-form
-        :model="formState"
-        @finish="onFinish">
-
+      <div v-if="msg" class="errormsg">
+        <p class="text-red-500">{{ msg }}</p>
+      </div>
+      <a-form :model="formState" @finish="onFinish">
         <a-form-item
           name="email"
           class="form_input"
@@ -77,7 +89,13 @@ const onFinish = async () => {
             >Forget Password?</router-link
           >
         </p>
-        <button class="auth_btn" @click="$router.push('/home')">Sign In</button>
+
+        <div class="loading">
+          <div class="loader" v-if="active">
+            <a-spin />
+          </div>
+        </div>
+        <button class="auth_btn" type="submit">Sign In</button>
       </a-form>
     </div>
 
@@ -88,6 +106,4 @@ const onFinish = async () => {
       </p>
     </div>
   </section>
-
- 
 </template>

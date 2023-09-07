@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { AlignRightOutlined } from '@ant-design/icons-vue';
 import Nav from './nav.vue';
-
+import AuthService from "../services/AuthService.js"
 const nav = ref(false);
 
 const toggleNav = () => {

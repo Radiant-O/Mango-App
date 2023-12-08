@@ -5,36 +5,54 @@ import Bottom_bar from "../components/bottom_bar.vue";
 import Toggle from "@vueform/toggle";
 import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons-vue";
 import { NativeSettings, AndroidSettings } from "capacitor-native-settings";
-import { useStore } from "vuex";
+// import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
 const tower = ref(false);
 const value = ref(true);
-const store = useStore();
+// const store = useStore();
 const router = useRouter();
 const username = ref(null);
 
+//Network Speed
+
+const bandwidth = ref("");
+
 onMounted(async () => {
-  if (!store.getters.isLoggedIn) {
-    router.push({ name: "/login" });
+  try {
+    const response = await fetch("", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include"
+    });
+
+    const content = await response.json();
+
+    username.value = `Hi ${content.data.user_name}`;
+
+    // await store.dispatch("setAuth", true);
+  } catch (e) {
+    // await store.dispatch("setAuth", false);
   }
-
-  username.value = store.getters.getUser.username;
-
-  // const response = await fetch("http://localhost:5001/api/users/current", {
-  //   headers: { "Content-Type": "application/json" },
-  // });
-  // const content = await response.json();
-
-  // await store.dispatch('setAuth', true);
 });
 
+const connection = async () => {
+  if (navigator.connection) {
+    await navigator.connection.ready;
 
+    bandwidth.value = navigator.connection.downlink.toFixed(2);
+  } else {
+    bandwidth.value = "0";
+  }
+};
 
 const openData = () => {
   NativeSettings.openAndroid({
     option: AndroidSettings.Network,
   });
+
+  connection();
 };
 </script>
 
@@ -45,14 +63,20 @@ const openData = () => {
       <div class="top_bar">
         <HomeBar />
       </div>
-
+      <div class="wes_box">
+        <p class="wes">Hi User{{ username }}</p>
+      </div>
+      
       <div>
         <Toggle v-model="value" />
       </div>
 
       <div class="home_body">
         <div class="top_body">
+
+
           <div class="top_body_btns">
+
             <div class="imgtr">
               <div @click="openData" class="container">
                 <input id="checkbox" type="checkbox" />
@@ -113,18 +137,18 @@ const openData = () => {
           <div class="body_bottom">
             <div class="download">
               <!-- <img src="" alt="" class="load_icon" /> -->
-              <div class="load_no">
-                <ArrowDownOutlined /> <span> 4.7kb/S</span>
+              <div class="load_no text-white">
+                <ArrowDownOutlined /> <span> {{ bandwidth }} Mbps</span>
               </div>
 
-              <p class="load_staus">Download</p>
+              <p class="load_staus text-white">Download</p>
             </div>
             <div class="download">
               <!-- <img src="" alt="" class="load_icon" /> -->
-              <div class="load_no">
-                <ArrowUpOutlined /> <span> 4.7kb/S</span>
+              <div class="load_no text-white">
+                <ArrowUpOutlined /> <span> {{ bandwidth }} Mbps</span>
               </div>
-              <p class="load_staus">Upload</p>
+              <p class="load_staus text-white">Upload</p>
             </div>
           </div>
         </div>

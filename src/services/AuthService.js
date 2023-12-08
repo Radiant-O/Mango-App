@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = 'http://localhost:3000/api/';
+const url = 'https://brandokonnect.com/api/';
 export default {
   login(credentials) {
     return axios

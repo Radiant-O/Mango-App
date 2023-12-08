@@ -4,7 +4,7 @@ import { LeftOutlined } from "@ant-design/icons-vue";
 import { useRouter } from "vue-router";
 // import auth from './stores/auth'
 import { useStore } from "vuex";
-import AuthService from "../services/AuthService.js";
+// import AuthService from "../services/AuthService.js";
 
 const store = useStore();
 
@@ -18,31 +18,53 @@ const active = ref(false);
 const router = useRouter();
 const msg = ref(null);
 
+// const onFinish = async () => {
+//   try {
+//     active.value = true;
+//     const credentials = {
+//       email: formState.email,
+//       password: formState.password,
+//     };
+//     const response = await AuthService.login(credentials);
+//     msg.value = response.msg;
+
+//     const token = response.token;
+//     const user = response.user;
+
+//     store.dispatch("login", { token, user });
+
+//     setTimeout(() => {
+//       active.value = false;
+//     }, 1500);
+
+//     router.push({ name: "home" });
+//   } catch (error) {
+//     setTimeout(() => {
+//       active.value = false;
+//     }, 1500);
+//     msg.value = error.response.msg;
+//   }
+// };
+
 const onFinish = async () => {
+  active.value = true;
   try {
-    active.value = true;
     const credentials = {
       email: formState.email,
       password: formState.password,
     };
-    const response = await AuthService.login(credentials);
-    msg.value = response.msg;
-
-    const token = response.token;
-    const user = response.user;
-
-    store.dispatch("login", { token, user });
-
-    setTimeout(() => {
-      active.value = false;
-    }, 1500);
-
-    router.push({ name: "home" });
-  } catch (error) {
-    setTimeout(() => {
-      active.value = false;
-    }, 1500);
-    msg.value = error.response.msg;
+    await fetch("", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(credentials),
+    });
+    msg.value = "Login Successful";
+    await router.push({ name: "home" });
+  } catch (e) {
+    msg.value = "Invalid Login Details";
   }
 };
 </script>
@@ -58,7 +80,7 @@ const onFinish = async () => {
     </div>
     <div class="auth_box">
       <div v-if="msg" class="errormsg">
-        <p class="text-red-500">{{ msg }}</p>
+        <p>{{ msg }}</p>
       </div>
       <a-form :model="formState" @finish="onFinish">
         <a-form-item
@@ -92,7 +114,7 @@ const onFinish = async () => {
 
         <div class="loading">
           <div class="loader" v-if="active">
-            <a-spin />
+            <a-spin /> 
           </div>
         </div>
         <button class="auth_btn" type="submit">Sign In</button>

@@ -1,4 +1,4 @@
-package com.mangoapp;
+package com.brandokonnect;
 
 import com.getcapacitor.BridgeActivity;
 

@@ -15,7 +15,7 @@ import {
   PhoneOutlined,
   ExportOutlined,
   CloseOutlined,
-  ProfileOutlined,
+  UserOutlined
 } from "@ant-design/icons-vue";
 
 const store = useStore();
@@ -28,9 +28,9 @@ const toggleNav = () => {
   nav.value = !nav.value;
 };
 
-const logout = () => {
+const logout = async () => {
   store.dispatch("logout");
-  router.push({ name: "login" });
+  await router.push({ name: "login" });
 };
 
 </script>
@@ -47,7 +47,7 @@ const logout = () => {
       </div>
       <div>
         <a href="https://brandokonnect.com/profile.php" class="div"
-          ><ProfileOutlined /><span>Profile</span></a
+          ><UserOutlined /><span>Profile</span></a
         >
       </div>
       <div>
@@ -80,8 +80,10 @@ const logout = () => {
         >
       </div>
 
-      <div class="div"  @click="logout">
-        <ExportOutlined :rotate="180" /><span>Log Out</span>
+      <div>
+        <router-link to="/login" class="div" @click="logout">
+          <ExportOutlined :rotate="180"/><span>Log Out</span></router-link
+        >
       </div>
     </section>
   </transition>

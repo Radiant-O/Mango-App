@@ -3,7 +3,7 @@ import { reactive, ref } from "vue";
 import { LeftOutlined } from "@ant-design/icons-vue";
 import { useRouter } from "vue-router";
 
-import AuthService from "../services/AuthService.js";
+//import AuthService from "../services/AuthService.js";
 
 const formState = reactive({
   firstname: "",
@@ -18,37 +18,23 @@ const msg = ref(null);
 const active = ref(false);
 const router = useRouter();
 
+
 const onFinish = async () => {
-  try {
-    active.value = true;
-    const credentials = {
-      fname: formState.firstname,
-      lname: formState.lastname,
-      user_name: formState.username,
-      phone: formState.phonenum,
-      email: formState.email,
-      password: formState.password,
-    };
-    const response = await AuthService.signUp(credentials);
-    msg.value = response.msg;
-    setTimeout(() => {
-      active.value = false;
-    }, 1500);
-    router.push({ name: "login" });
-    // await axios
-    //   .post("http://localhost:5001/api/users/register", data)
-    //   .then(() => {
-    //     setTimeout(() => {
-    //       active.value = false;
-    //     }, 2000);
-    //     router.push({ name: "login" });
-    //   });
-  } catch (error) {
-    setTimeout(() => {
-      active.value = false;
-    },1500);
-    msg.value = error.response.msg;
-  }
+  active.value = true;
+  const credentials = {
+    fname: formState.firstname,
+    lname: formState.lastname,
+    user_name: formState.username,
+    phone: formState.phonenum,
+    email: formState.email,
+    password: formState.password,
+  };
+  await fetch('', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(credentials)
+  });
+  await router.push({ name: "login" });
 };
 </script>
 
@@ -59,7 +45,7 @@ const onFinish = async () => {
       <p class="auth_text">Sign Up</p>
     </div>
     <div class="auth_box">
-      <p v-if="msg"> {{ msg }}</p>
+      <p v-if="msg">{{ msg }}</p>
       <a-form :model="formState" @finish="onFinish">
         <a-form-item
           name="firstname"

@@ -1,4 +1,5 @@
 # Mango App
+This a mobile app built with Vue3, Ionic, and Cordova. 
 
 This template should help get you started developing with Vue 3 in Vite.
 
